@@ -3,7 +3,7 @@
 
 #include <array>
 #include <cstdint>
-#include <string_view>
+#include <string>
 #include <vector>
 
 //Globals
@@ -42,6 +42,10 @@ constexpr std::array<std::uint8_t, FONTSET_SIZE> chip8_fontset
    0xF0, 0x80, 0xf0, 0x80, 0x80  // F
 };
 
+//alias template for 2d array
+template <typename T, std::size_t Row, std::size_t Col>
+using Array2d = std::array <std::array<T, Col>, Row>;
+
 //CHIP-8 Struct object
 
 struct Chip_8
@@ -55,12 +59,16 @@ struct Chip_8
    std::uint8_t soundTimer{};             //sound timer
    std::uint8_t delayTimer{};             //delay timer
    std::uint16_t opcode{};                //opcode
+   Array2d
+      <std::uint32_t, SCREEN_HEIGHT,
+       SCREEN_WIDTH> screen{};            //display
+   bool isDrawing{ false };               //draw to screen flag
 };
 
 //Function Declarations
 
-void LoadFont(Chip_8& system);                  //Loads system font into memory
-void LoadRom(Chip_8& system, std::string_view file);    //Loads rom into memory
+void LoadFont(Chip_8& system);                           //Loads system font
+void LoadRom(Chip_8& system, const std::string& file);   //Loads rom
 
 
 #endif

@@ -1,6 +1,7 @@
 #include "CHIP-8.h"
 #include <fstream>
 #include <iostream>
+#include <memory>
 
 //Function definitions
 
@@ -8,15 +9,30 @@
 void LoadFont(Chip_8& system)
 {
    for 
-      (std::vector<uint8_t, std::allocator<uint8_t>>::size_type
-      i{ 0 }; i < FONTSET_SIZE; ++i)
+      (std::vector<uint8_t, std::allocator<uint8_t>>::size_type i{ 0 };
+       i < FONTSET_SIZE; ++i)
    {
       system.memory.at(FONTSET_START + i) = chip8_fontset.at(i);
    }
 }
 
 //Loads program into memory starting at 0x200
-void LoadRom(Chip_8& system, std::string_view file)
+void LoadRom(Chip_8& system, const std::string& file)
 {
-   printf("Rom Loading Function\n");
+   std::ifstream rom(file, std::ios::binary | std::ios::ate);
+
+   std::streampos size{ rom.tellg() };
+   std::uint16_t romLen{ static_cast<uint16_t>(size) };
+   
+   std::unique_ptr<char[]> buffer{ std::make_unique<char[]>(romLen) };
+
+   rom.seekg(0, std::ios::beg);
+   rom.read(buffer.get(), size);
+   rom.close();
+
+   for 
+      (size_t i{ 0 }; i < romLen; ++i)
+   {
+      system.memory.at(START_ADDRESS + i) = static_cast<std::uint8_t>(buffer[i]);
+   }
 }
