@@ -10,10 +10,9 @@
 
 constexpr int SCREEN_WIDTH{ 64 };
 constexpr int SCREEN_HEIGHT{ 32 };
-constexpr int FONTSET_SIZE{ 0x50 };
-constexpr int FONTSET_START{ 0x50 };
-constexpr int FONTSET_END{ 0x9F };
-constexpr int START_ADDRESS{ 0x200 };
+constexpr int fontsetSize{ 0x50 };
+constexpr int fontsetStart{ 0x50 };
+constexpr unsigned int startAddress{ 0x200 };
 constexpr std::uint16_t opMask{ 0xF000 };
 constexpr std::uint16_t xMask{ 0x0F00 };
 constexpr std::uint16_t yMask{ 0x00F0 };
@@ -22,7 +21,7 @@ constexpr std::uint16_t nnnMask{ 0x0FFF };
 constexpr std::uint16_t nnMask{ 0x00FF };
 
 //Global array for font
-constexpr std::array<std::uint8_t, FONTSET_SIZE> chip8_fontset
+constexpr std::array<std::uint8_t, fontsetSize> chip8_fontset
 {
    0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
    0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -55,7 +54,7 @@ struct Chip_8
    std::vector<std::uint8_t> vRegister;   //registers
    std::vector<std::uint16_t> stack{};    //Stack
    std::uint16_t index{};                 //index pointer
-   std::uint16_t pc{ START_ADDRESS };     //program counter
+   std::uint16_t pc{ startAddress };     //program counter
    std::uint8_t soundTimer{};             //sound timer
    std::uint8_t delayTimer{};             //delay timer
    std::uint16_t opcode{};                //opcode
@@ -69,6 +68,6 @@ struct Chip_8
 
 void LoadFont(Chip_8& system);                           //Loads system font
 void LoadRom(Chip_8& system, const std::string& file);   //Loads rom
-
+void Fetch(Chip_8& system);                              //fetch opcode
 
 #endif

@@ -10,9 +10,9 @@ void LoadFont(Chip_8& system)
 {
    for 
       (std::vector<uint8_t, std::allocator<uint8_t>>::size_type i{ 0 };
-       i < FONTSET_SIZE; ++i)
+       i < fontsetSize; ++i)
    {
-      system.memory.at(FONTSET_START + i) = chip8_fontset.at(i);
+      system.memory.at(fontsetStart + i) = chip8_fontset.at(i);
    }
 }
 
@@ -33,6 +33,16 @@ void LoadRom(Chip_8& system, const std::string& file)
    for 
       (size_t i{ 0 }; i < romLen; ++i)
    {
-      system.memory.at(START_ADDRESS + i) = static_cast<std::uint8_t>(buffer[i]);
+      system.memory.at(startAddress + i) 
+         = static_cast<std::uint8_t>(buffer[i]);
    }
+}
+
+void Fetch(Chip_8& system)
+{
+   system.opcode 
+      = static_cast<uint16_t>
+      ((system.memory.at(system.pc) << 8u | system.memory.at(system.pc + 1u)));
+
+   system.pc += 2;
 }
