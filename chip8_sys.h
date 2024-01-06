@@ -11,7 +11,7 @@
 #define FONTSET_END 0x09F
 #define TOTAL_RAM 4096
 #define STACK_SIZE 16
-#define NUM_REGISTERS = 16;
+#define V_REGISTERS 16
 
 #include <stdint.h>
 
@@ -32,7 +32,7 @@ typedef struct
     uint16_t stack[STACK_SIZE];
 
     // Registers
-    uint8_t vReg[NUM_REGISTERS];
+    uint16_t vReg[V_REGISTERS];
     uint16_t index;
     uint16_t progCounter;
     uint16_t stackPointer;
