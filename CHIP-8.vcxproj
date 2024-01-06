@@ -123,6 +123,7 @@
       <LanguageStandard_C>Default</LanguageStandard_C>
       <AdditionalIncludeDirectories>C:\Libs\SDL2-2.28.5\include</AdditionalIncludeDirectories>
       <UseStandardPreprocessor>true</UseStandardPreprocessor>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,6 +152,7 @@
       <LanguageStandard_C>Default</LanguageStandard_C>
       <AdditionalIncludeDirectories>C:\Libs\SDL2-2.28.5\include</AdditionalIncludeDirectories>
       <UseStandardPreprocessor>true</UseStandardPreprocessor>
+      <DisableSpecificWarnings>4996</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

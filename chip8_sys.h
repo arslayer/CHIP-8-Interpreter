@@ -11,7 +11,7 @@
 #define FONTSET_END 0x09F
 #define TOTAL_RAM 4096
 #define STACK_SIZE 16
-#define NUM_REGISTERS 16
+#define NUM_REGISTERS = 16;
 
 #include <stdint.h>
 
