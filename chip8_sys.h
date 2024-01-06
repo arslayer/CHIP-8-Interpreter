@@ -13,6 +13,9 @@
 #define STACK_SIZE 16
 #define V_REGISTERS 16
 
+#define PIXEL_ON 0xFFFFFFFF
+#define PIXEL_OFF 0x00000000
+
 #include <stdint.h>
 
 enum BitMask
@@ -32,7 +35,7 @@ typedef struct
     uint16_t stack[STACK_SIZE];
 
     // Registers
-    uint16_t vReg[V_REGISTERS];
+    uint8_t vReg[V_REGISTERS];
     uint16_t index;
     uint16_t progCounter;
     uint16_t stackPointer;
