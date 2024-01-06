@@ -25,10 +25,5 @@ int main(int argc, char *argv[])
 
     printf("Hi %x\n", system.ram[516]);
 
-    /*std::cout
-        << std::dec << '\n' << fontsetSize << '\n'
-        << system.memory.at(fontsetStart) << '\n'
-        << system.pc << '\n'
-        << system.delayTimer << '\n' << system.opcode << '\n';*/
     return 0;
 }
