@@ -18,8 +18,8 @@ int main(int argc, char *argv[])
     // CHIP-8 system declaration
     Chip8 system = { .progCounter = PC_START };
 
-    // Initialize the system
-    //Init(&system);
+    // Load the font
+    LoadFont(&system);
 
     LoadRom(&system, romName);
 
