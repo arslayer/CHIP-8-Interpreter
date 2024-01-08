@@ -23,8 +23,8 @@
     <ClCompile Include="src\main.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="chip8_sys.h" />
     <ClInclude Include="src\CHIP-8.h" />
+    <ClInclude Include="src\chip8_sys.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
