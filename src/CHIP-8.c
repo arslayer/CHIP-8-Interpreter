@@ -56,25 +56,78 @@ void Fetch(Chip8 *sys)
 // Loads program into memory starting at 0x200
 void LoadRom(Chip8 *sys, const char *rom)
 {
+    uint8_t *buffer;
     FILE *fp = fopen(rom, "rb");
-    
-    fseek(fp, 0, SEEK_END);
-    size_t romLength = ftell(fp);
-    rewind(fp);
 
-    uint8_t *buffer = malloc(sizeof(uint8_t) * romLength);
+    if (fp != NULL)
+    { 
 
-    if (buffer != NULL)
-    {
+        fseek(fp, 0, SEEK_END);
+        size_t romLength = ftell(fp);
+        rewind(fp);
+
+        buffer = malloc(sizeof(uint8_t) * romLength);
+
+        if (buffer == NULL)
+        {
+            printf("ERROR: Out of memory\n");
+            exit(EXIT_FAILURE);
+        }
+        
         fread(buffer, sizeof(uint8_t), romLength, fp);
 
         for (int i = 0; i < romLength; i++)
         {
             sys->ram[PC_START + i] = buffer[i];
         }
+        
     }
-    
+    else
+    {
+        printf("ERROR: ROM file not found\n");
+        exit(EXIT_FAILURE);
+    }
+
     fclose(fp);
     free(buffer);
 }
 
+void DecodeAndExecute(Chip8* sys)
+{
+    uint16_t opcode = sys->opcode;
+    unsigned int firstNib = (opcode & NIBBLE1) >> 12U;
+    unsigned int regX = (opcode & NIBBLE2) >> 8U;
+    unsigned int regY = (opcode & NIBBLE3) >> 4U;
+    unsigned int n = (opcode & NIBBLE4);
+    unsigned int doubleN = (opcode & LAST_BYTE);
+    unsigned int firstByte = (opcode & FIRST_BYTE) >> 8U;
+    unsigned int tripleN = (opcode & NNN);
+
+    switch (firstNib)
+    {
+    case 0x0:
+        switch (doubleN)
+        {
+        case 0xE0:
+            //TODO: Clear the screen and set draw flag
+            break;
+        default:
+            break;
+        }
+    case 0x1:
+        //TODO: Jump to NNN address in memory
+        break;
+    case 0x6:
+        //TODO: load v register[x] with value NN
+        break;
+    case 0xA:
+        //TODO: load index register with immediate value
+        break;
+    case 0xD:
+        //TODO: Draw sprite to screen and set draw flag
+        break;
+    default:
+        break;
+    }
+    printf("%x\n%x\n%x\n%x\n%x\n%x\n%x\n%zu\n", firstNib, regX, regY, n, doubleN, firstByte, tripleN, sizeof(int));
+}

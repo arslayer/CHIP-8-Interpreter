@@ -16,18 +16,16 @@
 #define PIXEL_ON 0xFFFFFFFF
 #define PIXEL_OFF 0x00000000
 
-#include <stdint.h>
+#define NIBBLE1 0xF000
+#define NIBBLE2 0x0F00
+#define NIBBLE3 0x00F0
+#define NIBBLE4 0x000F
+#define FIRST_BYTE 0xFF00
+#define LAST_BYTE 0x00FF
+#define NNN 0x0FFF
 
-enum BitMask
-{
-    NIBBLE1 = 0xF000,
-    NIBBLE2 = 0x0F00,
-    NIBBLE3 = 0x00F0,
-    NIBBLE4 = 0x000F,
-    BYTE1 = 0xFF00,
-    BYTE2 = 0x00FF,
-    NNN = 0x0FFF,
-};
+#include <stdint.h>
+#include <stdbool.h>
 
 typedef struct
 {
@@ -47,6 +45,9 @@ typedef struct
     uint16_t opcode;
 
     uint32_t screen[SCREEN_HEIGHT * SCREEN_WIDTH];
+
+    bool isRunning;
+    bool drawScreen;
 
 
 } Chip8;

@@ -16,7 +16,9 @@ int main(int argc, char *argv[])
 
 
     // CHIP-8 system declaration
-    Chip8 system = { .progCounter = PC_START };
+    Chip8 system = { .progCounter = PC_START,
+                     .isRunning = true,
+                     .drawScreen = false };
 
     // Load the font
     LoadFont(&system);
@@ -24,6 +26,8 @@ int main(int argc, char *argv[])
     LoadRom(&system, romName);
 
     printf("Hi %x\n", system.ram[516]);
+
+    DecodeAndExecute(&system);
 
     return 0;
 }

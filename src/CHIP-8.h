@@ -8,6 +8,7 @@
 
 void LoadFont(Chip8 *sys);
 void LoadRom(Chip8 *sys, const char *rom);   
-void Fetch(Chip8 *sys);                              
+void Fetch(Chip8 *sys);
+void DecodeAndExecute(Chip8 *sys);
 
 #endif
