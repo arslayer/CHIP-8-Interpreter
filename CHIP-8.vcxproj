@@ -20,11 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\CHIP-8.c" />
+    <ClCompile Include="src\instructions.c" />
     <ClCompile Include="src\main.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CHIP-8.h" />
     <ClInclude Include="src\chip8_sys.h" />
+    <ClInclude Include="src\instructions.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

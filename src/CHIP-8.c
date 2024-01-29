@@ -1,5 +1,5 @@
 #include "CHIP-8.h"
-#include "chip8_sys.h"
+#include "instructions.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -94,40 +94,46 @@ void LoadRom(Chip8 *sys, const char *rom)
 
 void DecodeAndExecute(Chip8* sys)
 {
+    // Local opcode variable
     uint16_t opcode = sys->opcode;
-    unsigned int firstNib = (opcode & NIBBLE1) >> 12U;
-    unsigned int regX = (opcode & NIBBLE2) >> 8U;
-    unsigned int regY = (opcode & NIBBLE3) >> 4U;
-    unsigned int n = (opcode & NIBBLE4);
-    unsigned int doubleN = (opcode & LAST_BYTE);
-    unsigned int firstByte = (opcode & FIRST_BYTE) >> 8U;
-    unsigned int tripleN = (opcode & NNN);
 
-    switch (firstNib)
+    // Extract values from opcode with bitmasks.
+    uint8_t instruction = (opcode & NIBBLE1) >> 12U;
+    uint8_t regX = (opcode & NIBBLE2) >> 8U;
+    uint8_t regY = (opcode & NIBBLE3) >> 4U;
+    uint8_t n = (opcode & NIBBLE4);
+    uint8_t doubleN = (opcode & LAST_BYTE);
+    uint8_t firstByte = (opcode & FIRST_BYTE) >> 8U;
+    uint16_t tripleN = (opcode & NNN);
+
+    switch (instruction)
     {
     case 0x0:
         switch (doubleN)
         {
         case 0xE0:
             //TODO: Clear the screen and set draw flag
+            printf("Cleared the screen\n");
             break;
         default:
             break;
         }
+        break;
     case 0x1:
-        //TODO: Jump to NNN address in memory
+        sys->progCounter = JMP(&tripleN);
         break;
     case 0x6:
-        //TODO: load v register[x] with value NN
+        sys->vReg[regX] = LoadRegister(&doubleN);
         break;
     case 0xA:
-        //TODO: load index register with immediate value
+        sys->index = LoadIndex(&tripleN);
         break;
     case 0xD:
         //TODO: Draw sprite to screen and set draw flag
+        printf("Drawing sprite\n");
         break;
     default:
         break;
     }
-    printf("%x\n%x\n%x\n%x\n%x\n%x\n%x\n%zu\n", firstNib, regX, regY, n, doubleN, firstByte, tripleN, sizeof(int));
+    printf("%x\n%x\n%x\n%x\n%x\n%x\n%x\n\n", instruction, regX, regY, n, doubleN, firstByte, tripleN);
 }

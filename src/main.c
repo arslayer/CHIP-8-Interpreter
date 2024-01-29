@@ -1,5 +1,4 @@
 #include "CHIP-8.h"
-#include "chip8_sys.h"
 #include <stdio.h>
 
 int main(int argc, char *argv[])
@@ -26,8 +25,13 @@ int main(int argc, char *argv[])
     LoadRom(&system, romName);
 
     printf("Hi %x\n", system.ram[516]);
+    while (true)
+    {
 
-    DecodeAndExecute(&system);
+        Fetch(&system);
+
+        DecodeAndExecute(&system);
+    }
 
     return 0;
 }
