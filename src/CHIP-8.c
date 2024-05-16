@@ -6,11 +6,11 @@
 
 // Function definitions
 
-// Loads font set into memory at 0x50 to 0x9f
-void LoadFont(Chip8 *sys)
+// Loads font set into memory at
+void FontInit(Chip8 *sys)
 {
     // Chip-8 fontset to be loaded into memory.
-    static const uint8_t fontSet[FONTSET_SIZE] =
+    const uint8_t fontSet[FONTSET_SIZE] =
     {
         0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
         0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -31,10 +31,8 @@ void LoadFont(Chip8 *sys)
     };
 
 
-   for (int i = FONTSET_START, j = 0; i <= FONTSET_END &&
-       j < FONTSET_SIZE; i++, j++)
-   {
-      sys->ram[i] = fontSet[j];
+   for (int i = 0; i < FONTSET_SIZE; i++) {
+      sys->ram[i] = fontSet[i];
    }
 }
 
@@ -42,7 +40,7 @@ void LoadFont(Chip8 *sys)
 void Fetch(Chip8 *sys)
 {
     // Local variable to access array
-    uint16_t pc = sys->progCounter;
+    const uint16_t pc = sys->progCounter;
 
     // Get opcode from bytes stored at memory locations
     sys->opcode = (sys->ram[pc] << 8 | sys->ram[pc + 1]);
@@ -56,17 +54,16 @@ void Fetch(Chip8 *sys)
 // Loads program into memory starting at 0x200
 void LoadRom(Chip8 *sys, const char *rom)
 {
-    uint8_t *buffer;
     FILE *fp = fopen(rom, "rb");
 
     if (fp != NULL)
     { 
 
         fseek(fp, 0, SEEK_END);
-        size_t romLength = ftell(fp);
+        const size_t romLength = ftell(fp);
         rewind(fp);
 
-        buffer = malloc(sizeof(uint8_t) * romLength);
+        uint8_t *buffer = malloc(sizeof(uint8_t) * romLength);
 
         if (buffer == NULL)
         {
@@ -81,6 +78,9 @@ void LoadRom(Chip8 *sys, const char *rom)
             sys->ram[PC_START + i] = buffer[i];
         }
         
+        free(buffer);
+
+        buffer = NULL;
     }
     else
     {
@@ -89,7 +89,7 @@ void LoadRom(Chip8 *sys, const char *rom)
     }
 
     fclose(fp);
-    free(buffer);
+    
 }
 
 void DecodeAndExecute(Chip8* sys)
@@ -112,25 +112,26 @@ void DecodeAndExecute(Chip8* sys)
         switch (doubleN)
         {
         case 0xE0:
-            //TODO: Clear the screen and set draw flag
-            printf("Cleared the screen\n");
+            clearScreen_00e0(sys);
             break;
         default:
             break;
         }
         break;
     case 0x1:
-        sys->progCounter = JMP(&tripleN);
+        sys->progCounter = jump_1nnn(tripleN);
         break;
     case 0x6:
-        sys->vReg[regX] = LoadRegister(&doubleN);
+        sys->vReg[regX] = setRegVX_6xnn(doubleN);
+        break;
+    case 0x7:
+        addVX_7xnn(sys, regX, doubleN);
         break;
     case 0xA:
-        sys->index = LoadIndex(&tripleN);
+        sys->index = setIndexReg_annn(tripleN);
         break;
     case 0xD:
-        //TODO: Draw sprite to screen and set draw flag
-        printf("Drawing sprite\n");
+        display_dxyn(sys, regX, regY, n);
         break;
     default:
         break;

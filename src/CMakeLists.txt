@@ -12,8 +12,8 @@ target_compile_options(comp_flags INTERFACE
     "$<${gcc_like}:$<BUILD_INTERFACE:-Wall;-Wextra>>"
     "$<${msvc_c}:$<BUILD_INTERFACE:-W4;-WX>>")
 
-target_link_libraries(${PROJECT_NAME} PUBLIC raylib comp_flags)
+target_link_libraries(${PROJECT_NAME} raylib comp_flags)
 
 if(MSVC)
-    target_link_libraries(${PROJECT_NAME} PUBLIC gdi32.lib winmm.lib)
+    target_link_libraries(${PROJECT_NAME} gdi32.lib winmm.lib)
 endif()

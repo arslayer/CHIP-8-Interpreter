@@ -1,4 +1,5 @@
 #include "CHIP-8.h"
+#include "raylib.h"
 #include <stdio.h>
 
 int main(int argc, char *argv[])
@@ -20,7 +21,7 @@ int main(int argc, char *argv[])
                      .drawScreen = false };
 
     // Load the font
-    LoadFont(&system);
+    FontInit(&system);
 
     LoadRom(&system, romName);
 

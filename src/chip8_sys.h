@@ -44,7 +44,7 @@ typedef struct
 
     uint16_t opcode;
 
-    uint32_t screen[SCREEN_HEIGHT * SCREEN_WIDTH];
+    bool screen[SCREEN_HEIGHT][SCREEN_WIDTH];
 
     bool isRunning;
     bool drawScreen;
