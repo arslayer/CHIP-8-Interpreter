@@ -2,17 +2,17 @@
 #include "raylib.h"
 #include <stdio.h>
 
-int main(int argc, char *argv[])
+int main(void)
 {
-    if (argc != 2)
+    /*if (argc != 2)
     {
         printf("Usage: CHIP-8 <(path to)rom name>\n");
       
         return 1;
-    }
+    }*/
 
     //Get rom file from cmd line argument
-    char *romName = argv[1];
+    char* romName = "C:/Users/_ars_/source/repos/CHIP-8-Interpreter/1-chip8-logo.ch8";
 
 
     // CHIP-8 system declaration
