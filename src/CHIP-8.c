@@ -7,10 +7,10 @@
 // Function definitions
 
 // Loads font set into memory at
-void FontInit(Chip8 *sys)
+static void FontInit(Chip8 *sys)
 {
     // Chip-8 fontset to be loaded into memory.
-    const uint8_t fontSet[FONTSET_SIZE] =
+    static const uint8_t fontSet[FONTSET_SIZE] =
     {
         0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
         0x20, 0x60, 0x20, 0x20, 0x70, // 1
@@ -37,7 +37,7 @@ void FontInit(Chip8 *sys)
 }
 
 // Fetch opcode from memory
-void Fetch(Chip8 *sys)
+static void Fetch(Chip8 *sys)
 {
     // Local variable to access array
     const uint16_t pc = sys->progCounter;
@@ -52,7 +52,7 @@ void Fetch(Chip8 *sys)
 
 
 // Loads program into memory starting at 0x200
-void LoadRom(Chip8 *sys, const char *rom)
+static void LoadRom(Chip8 *sys, const char *rom)
 {
     FILE *fp = fopen(rom, "rb");
 
@@ -92,7 +92,7 @@ void LoadRom(Chip8 *sys, const char *rom)
     
 }
 
-void DecodeAndExecute(Chip8* sys)
+static void DecodeAndExecute(Chip8* sys)
 {
     // Local opcode variable
     uint16_t opcode = sys->opcode;
@@ -137,4 +137,31 @@ void DecodeAndExecute(Chip8* sys)
         break;
     }
     printf("%x\n%x\n%x\n%x\n%x\n%x\n%x\n\n", instruction, regX, regY, n, doubleN, firstByte, tripleN);
+}
+
+// Initialize the Chip8 system
+Chip8* sysInit(const char *rom)
+{ 
+    // Allocate memory for struct to be returned
+    Chip8 *temp = calloc(1, sizeof(Chip8));
+    
+    if (temp != NULL) {
+        // Initialize struct members
+        temp->isRunning = true;
+        temp->progCounter = PC_START;
+        temp->drawScreen = false;
+
+        // Load font
+        FontInit(temp);
+
+        // Load rom
+        LoadRom(temp, rom);
+        
+    }
+    else {
+        printf("Memory not allocated");
+    }
+
+    return temp;
+    
 }

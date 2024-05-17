@@ -16,22 +16,15 @@ int main(int argc, char *argv[])
 
 
     // CHIP-8 system declaration
-    Chip8 system = { .progCounter = PC_START,
-                     .isRunning = true,
-                     .drawScreen = false };
-
-    // Load the font
-    FontInit(&system);
-
-    LoadRom(&system, romName);
+    Chip8 system = *sysInit(romName);
 
     printf("Hi %x\n", system.ram[516]);
     while (true)
     {
 
-        Fetch(&system);
+        /*Fetch(&system);
 
-        DecodeAndExecute(&system);
+        DecodeAndExecute(&system);*/
     }
 
     return 0;

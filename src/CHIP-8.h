@@ -6,9 +6,11 @@
 
 // Function Declarations
 
-void FontInit(Chip8 *sys);
-void LoadRom(Chip8 *sys, const char *rom);   
-void Fetch(Chip8 *sys);
-void DecodeAndExecute(Chip8 *sys);
+//void FontInit(Chip8 *sys);
+//void LoadRom(Chip8 *sys, const char *rom);   
+//void Fetch(Chip8 *sys);
+//void DecodeAndExecute(Chip8 *sys);
+
+Chip8* sysInit(const char *rom);
 
 #endif

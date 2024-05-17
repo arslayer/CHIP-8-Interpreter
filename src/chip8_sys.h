@@ -24,19 +24,19 @@
 #define LAST_BYTE 0x00FF
 #define NNN 0x0FFF
 
+#include "stack.h"
 #include <stdint.h>
 #include <stdbool.h>
 
-typedef struct
+typedef struct Chip8_t
 {
     uint8_t ram[TOTAL_RAM];
-    uint16_t stack[STACK_SIZE];
+    Stack stack;
 
     // Registers
     uint8_t vReg[V_REGISTERS];
     uint16_t index;
     uint16_t progCounter;
-    uint16_t stackPointer;
 
     // Timers
     uint8_t delayTimer;

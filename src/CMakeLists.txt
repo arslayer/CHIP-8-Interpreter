@@ -4,7 +4,7 @@ add_library(comp_flags INTERFACE)
 set(gcc_like "$<C_COMPILER_ID:ARMClang,AppleClang,Clang,GNU,LCC>")
 set(msvc_c "$<C_COMPILER_ID:MSVC>")
 
-add_executable (${PROJECT_NAME} CHIP-8.c instructions.c main.c)
+add_executable (${PROJECT_NAME} CHIP-8.c instructions.c main.c "stack.c" "stack.h")
 
 target_compile_features(comp_flags INTERFACE c_std_11)
 
