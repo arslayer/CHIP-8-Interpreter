@@ -9,6 +9,8 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.ch8
+CMakeUserPresets.json
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
