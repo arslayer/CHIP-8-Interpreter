@@ -29,6 +29,27 @@ void call_2nnn(Chip8* sys, const uint16_t nnn)
     sys->progCounter = nnn;
 }
 
+void skip_3xnn(Chip8* sys, const uint8_t x, const uint8_t nn)
+{
+    if (sys->vReg[x] == nn) {
+        sys->progCounter += 2;
+    }
+}
+
+void skip_4xnn(Chip8* sys, const uint8_t x, const uint8_t nn)
+{
+    if (sys->vReg[x] != nn) {
+        sys->progCounter += 2;
+    }
+}
+
+void skip_5xy0(Chip8* sys, const uint8_t x, const uint8_t y)
+{
+    if (sys->vReg[x] == sys->vReg[y]) {
+        sys->progCounter += 2;
+    }
+}
+
 uint8_t setRegVX_6xnn(const uint8_t value)
 {
     return value;
@@ -37,6 +58,77 @@ uint8_t setRegVX_6xnn(const uint8_t value)
 void addVX_7xnn(Chip8* sys, const uint8_t reg, const uint8_t value)
 {
     sys->vReg[reg] += value;
+}
+
+void set_8xy0(Chip8* sys, const uint8_t x, const uint8_t y)
+{
+    sys->vReg[x] = sys->vReg[y];
+}
+
+void binaryOR_8xy1(Chip8* sys, const uint8_t x, const uint8_t y)
+{
+    sys->vReg[x] |= sys->vReg[y];
+}
+
+void binaryAND_8xy2(Chip8* sys, const uint8_t x, const uint8_t y)
+{
+    sys->vReg[x] &= sys->vReg[y];
+}
+
+void logicalXOR_8xy3(Chip8* sys, const uint8_t x, const uint8_t y)
+{
+    sys->vReg[x] ^= sys->vReg[y];
+}
+
+void add_8xy4(Chip8* sys, const uint8_t x, const uint8_t y)
+{
+    // Get result to test for "overflow"
+    int result = sys->vReg[x] + sys->vReg[y];
+    
+    // Set VF to 1 if result is greater than 255
+    if (result > 255) {
+        sys->vReg[0xF] = 1;
+    }
+
+    // Add value in VY to VX
+    sys->vReg[x] += sys->vReg[y];
+}
+
+void sub_8xy5(Chip8* sys, const uint8_t x, const uint8_t y)
+{
+    // Check if VX is greater than VY and set carry flag to 1 if true
+    if (sys->vReg[x] > sys->vReg[y]) {
+        sys->vReg[0xF] = 1;
+    }
+    // Set to zero if not true
+    else {
+        sys->vReg[0xF] = 0;
+    }
+
+    // Perform subtraction and store in VX
+    sys->vReg[x] = sys->vReg[x] - sys->vReg[y];
+}
+
+void sub_8xy7(Chip8* sys, const uint8_t x, const uint8_t y)
+{
+    // Check if VY is greater than VX and set carry flag to 1 if true
+    if (sys->vReg[y] > sys->vReg[x]) {
+        sys->vReg[0xF] = 1;
+    }
+    // Set to zero if not true
+    else {
+        sys->vReg[0xF] = 0;
+    }
+
+    // Perform subtraction and store in VX
+    sys->vReg[x] = sys->vReg[y] - sys->vReg[x];
+}
+
+void skip_9xy0(Chip8* sys, const uint8_t x, const uint8_t y)
+{
+    if (sys->vReg[x] != sys->vReg[y]) {
+        sys->progCounter += 2;
+    }
 }
 
 uint16_t setIndexReg_annn(const uint16_t index)

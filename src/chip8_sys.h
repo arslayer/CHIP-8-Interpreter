@@ -11,16 +11,13 @@
 #define STACK_SIZE 16
 #define V_REGISTERS 16
 
-#define PIXEL_ON 0xFFFFFFFF
-#define PIXEL_OFF 0x00000000
-
-#define NIBBLE1 0xF000U
-#define NIBBLE2 0x0F00U
-#define NIBBLE3 0x00F0U
-#define NIBBLE4 0x000FU
-#define FIRST_BYTE 0xFF00U
-#define LAST_BYTE 0x00FFU
-#define NNN 0x0FFFU
+#define NIBBLE1 0xF000
+#define NIBBLE2 0x0F00
+#define NIBBLE3 0x00F0
+#define NIBBLE4 0x000F
+#define FIRST_BYTE 0xFF00
+#define LAST_BYTE 0x00FF
+#define NNN 0x0FFF
 
 #include <stdint.h>
 #include <stdbool.h>

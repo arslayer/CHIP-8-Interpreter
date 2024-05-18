@@ -114,6 +114,9 @@ static void DecodeAndExecute(Chip8* sys)
         case 0xE0:
             clearScreen_00e0(sys);
             break;
+        case 0xEE:
+            return_00ee(sys);
+            break;
         default:
             break;
         }
@@ -121,12 +124,23 @@ static void DecodeAndExecute(Chip8* sys)
     case 0x1:
         sys->progCounter = jump_1nnn(tripleN);
         break;
+    case 0x2:
+        call_2nnn(sys, tripleN);
+        break;
+    case 0x3:
+        skip_3xnn(sys, regX, doubleN);
+    case 0x4:
+        skip_4xnn(sys, regX, doubleN);
+    case 0x5:
+        skip_5xy0(sys, regX, regY);
     case 0x6:
         sys->vReg[regX] = setRegVX_6xnn(doubleN);
         break;
     case 0x7:
         addVX_7xnn(sys, regX, doubleN);
         break;
+    case 0x9:
+        skip_9xy0(sys, regX, regY);
     case 0xA:
         sys->index = setIndexReg_annn(tripleN);
         break;
@@ -164,6 +178,7 @@ Chip8* sysInit(const char *rom)
     return temp;
     
 }
+
 
 void cycle(Chip8* sys)
 {
