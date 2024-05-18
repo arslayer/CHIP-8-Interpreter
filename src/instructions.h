@@ -6,8 +6,14 @@
 // Turn all pixels off.
 void clearScreen_00e0(Chip8 *sys);
 
+// Return from subroutine
+void return_00ee(Chip8* sys);
+
 //  Sets program counter to NNN.  Program jumps to memory location
 uint16_t jump_1nnn(const uint16_t address);
+
+// Call subroutine at memory location NNN
+void call_2nnn(Chip8* sys, const uint16_t nnn);
 
 // Sets the register V[X] to the value NN
 uint8_t setRegVX_6xnn(const uint8_t value);

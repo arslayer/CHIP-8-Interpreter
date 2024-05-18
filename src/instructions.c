@@ -13,9 +13,20 @@ void clearScreen_00e0(Chip8* sys)
     sys->drawScreen = true;
 }
 
+void return_00ee(Chip8* sys)
+{
+    sys->progCounter = sys->stack[--sys->stackPointer];
+}
+
 uint16_t jump_1nnn(const uint16_t address)
 {
     return address;
+}
+
+void call_2nnn(Chip8* sys, const uint16_t nnn)
+{
+    sys->stack[sys->stackPointer++] = sys->progCounter;
+    sys->progCounter = nnn;
 }
 
 uint8_t setRegVX_6xnn(const uint8_t value)
@@ -41,7 +52,6 @@ void display_dxyn(Chip8* sys, uint8_t x, uint8_t y, uint8_t n)
     sys->vReg[0xF] = 0;
     int spriteHeight = n;
     int pixel;
-    bool screenPixel;
 
     // Outer loop for y axis
     for (int i = 0; i < spriteHeight; i++) {
@@ -64,7 +74,7 @@ void display_dxyn(Chip8* sys, uint8_t x, uint8_t y, uint8_t n)
                     continue;
                 }
 
-                screenPixel = sys->screen[yPos + i][xPos + j];
+                bool screenPixel = sys->screen[yPos + i][xPos + j];
 
                 if (screenPixel) {
                     sys->vReg[0xF] = 1;
