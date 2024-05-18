@@ -1,4 +1,5 @@
 #include "instructions.h"
+#include "raylib.h"
 
 void clearScreen_00e0(Chip8* sys)
 {
@@ -109,6 +110,26 @@ void sub_8xy5(Chip8* sys, const uint8_t x, const uint8_t y)
     sys->vReg[x] = sys->vReg[x] - sys->vReg[y];
 }
 
+void shiftRight_8xy6(Chip8* sys, const uint8_t x, const uint8_t y)
+{
+    // Set VX to value of VY
+    sys->vReg[x] = sys->vReg[y];
+
+    // Get bit that will be shifted out
+    bool bit = sys->vReg[x] & 0x01;
+
+    // Shift value
+    sys->vReg[x] >>= 0x01;
+
+    // Set carry flag depending on bit shifted out
+    if (bit) {
+        sys->vReg[0xF] = 1;
+    }
+    else {
+        sys->vReg[0xF] = 0;
+    }
+}
+
 void sub_8xy7(Chip8* sys, const uint8_t x, const uint8_t y)
 {
     // Check if VY is greater than VX and set carry flag to 1 if true
@@ -122,6 +143,36 @@ void sub_8xy7(Chip8* sys, const uint8_t x, const uint8_t y)
 
     // Perform subtraction and store in VX
     sys->vReg[x] = sys->vReg[y] - sys->vReg[x];
+}
+
+void shiftLeft_8xye(Chip8* sys, const uint8_t x, const uint8_t y)
+{
+    // Set VX to value of VY
+    sys->vReg[x] = sys->vReg[y];
+
+    // Get bit that will be shifted out
+    bool bit = sys->vReg[x] & 0x01;
+
+    // Shift value
+    sys->vReg[x] <<= 0x01;
+
+    // Set carry flag depending on bit shifted out
+    if (bit) {
+        sys->vReg[0xF] = 1;
+    }
+    else {
+        sys->vReg[0xF] = 0;
+    }
+}
+
+void jumpOffset_bnnn(Chip8* sys, const uint16_t nnn)
+{
+    sys->progCounter = nnn + sys->vReg[0];
+}
+
+void random_cxnn(Chip8* sys, const uint8_t x, const uint8_t nn)
+{
+    sys->vReg[x] = GetRandomValue(0, nn) & nn;
 }
 
 void skip_9xy0(Chip8* sys, const uint8_t x, const uint8_t y)

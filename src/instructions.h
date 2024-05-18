@@ -30,6 +30,7 @@ uint8_t setRegVX_6xnn(const uint8_t value);
 // Adds value NN to V[X]
 void addVX_7xnn(Chip8 *sys, const uint8_t reg, const uint8_t value);
 
+
 /* LOGIC AND ARITHMETIC INSTRUCTIONS */
 
 // Set VX to the value of VY
@@ -50,8 +51,22 @@ void add_8xy4(Chip8* sys, const uint8_t x, const uint8_t y);
 // Set VX to VX minus VY and set carry flag
 void sub_8xy5(Chip8* sys, const uint8_t x, const uint8_t y);
 
+// Shift right
+void shiftRight_8xy6(Chip8* sys, const uint8_t x, const uint8_t y);
+
 // Set VX to VY - VX and set carry flag
 void sub_8xy7(Chip8* sys, const uint8_t x, const uint8_t y);
+
+// Shift left
+void shiftLeft_8xye(Chip8* sys, const uint8_t x, const uint8_t y);
+
+/* LOGIC AND ARITHMETIC END */
+
+// Jump with offset
+void jumpOffset_bnnn(Chip8* sys, const uint16_t nnn);
+
+// Store random number in VX
+void random_cxnn(Chip8* sys, const uint8_t x, const uint8_t nn);
 
 // Skip if value in VX is not equal to VY
 void skip_9xy0(Chip8* sys, const uint8_t x, const uint8_t y);

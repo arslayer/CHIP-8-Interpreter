@@ -1,6 +1,7 @@
 #include "CHIP-8.h"
 #include "raylib.h"
 #include <stdio.h>
+#include <time.h>
 
 int main(void)
 {
@@ -10,6 +11,8 @@ int main(void)
       
         return 1;
     }*/
+    SetRandomSeed(time(0));
+
     InitWindow(SCREEN_WIDTH * 10, SCREEN_HEIGHT * 10, "CHIPX");
 
     SetTargetFPS(60);
