@@ -62,11 +62,6 @@ void shiftLeft_8xye(Chip8* sys, const uint8_t x, const uint8_t y);
 
 /* LOGIC AND ARITHMETIC END */
 
-// Jump with offset
-void jumpOffset_bnnn(Chip8* sys, const uint16_t nnn);
-
-// Store random number in VX
-void random_cxnn(Chip8* sys, const uint8_t x, const uint8_t nn);
 
 // Skip if value in VX is not equal to VY
 void skip_9xy0(Chip8* sys, const uint8_t x, const uint8_t y);
@@ -74,7 +69,24 @@ void skip_9xy0(Chip8* sys, const uint8_t x, const uint8_t y);
 // Sets the index register to value NNN
 uint16_t setIndexReg_annn(const uint16_t index);
 
+// Jump with offset
+void jumpOffset_bnnn(Chip8* sys, const uint16_t nnn);
+
+// Store random number in VX
+void random_cxnn(Chip8* sys, const uint8_t x, const uint8_t nn);
+
 // Turns pixels on to be drawn to screen.
 void display_dxyn(Chip8 *sys, uint8_t x, uint8_t y, uint8_t n);
+
+
+/* SKIP IF KEY */
+
+// Skip if key corresponding to VX is pressed
+void skipIfPressed_ex9e(Chip8* sys, const uint8_t x);
+
+// Skip if key corresponding to VX is not pressed
+void skipIfNotPressed_exa1(Chip8* sys, const uint8_t x);
+
+/* END SKIP IF KEY */
 
 #endif // !INSTRUCTIONS_H

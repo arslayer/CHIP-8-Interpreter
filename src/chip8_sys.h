@@ -27,6 +27,7 @@ typedef struct Chip8_t
 {
     uint8_t ram[TOTAL_RAM];
     uint16_t stack[STACK_SIZE];
+    uint8_t keys[16];
 
     // Registers
     uint8_t vReg[V_REGISTERS];

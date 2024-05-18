@@ -165,16 +165,6 @@ void shiftLeft_8xye(Chip8* sys, const uint8_t x, const uint8_t y)
     }
 }
 
-void jumpOffset_bnnn(Chip8* sys, const uint16_t nnn)
-{
-    sys->progCounter = nnn + sys->vReg[0];
-}
-
-void random_cxnn(Chip8* sys, const uint8_t x, const uint8_t nn)
-{
-    sys->vReg[x] = GetRandomValue(0, nn) & nn;
-}
-
 void skip_9xy0(Chip8* sys, const uint8_t x, const uint8_t y)
 {
     if (sys->vReg[x] != sys->vReg[y]) {
@@ -185,6 +175,16 @@ void skip_9xy0(Chip8* sys, const uint8_t x, const uint8_t y)
 uint16_t setIndexReg_annn(const uint16_t index)
 {
     return index;
+}
+
+void jumpOffset_bnnn(Chip8* sys, const uint16_t nnn)
+{
+    sys->progCounter = nnn + sys->vReg[0];
+}
+
+void random_cxnn(Chip8* sys, const uint8_t x, const uint8_t nn)
+{
+    sys->vReg[x] = GetRandomValue(0, nn) & nn;
 }
 
 void display_dxyn(Chip8* sys, uint8_t x, uint8_t y, uint8_t n)
@@ -232,4 +232,18 @@ void display_dxyn(Chip8* sys, uint8_t x, uint8_t y, uint8_t n)
     }
     // Set drawScreen flag to true
     sys->drawScreen = true;
+}
+
+void skipIfPressed_ex9e(Chip8* sys, const uint8_t x)
+{
+    if (IsKeyPressed(sys->keys[sys->vReg[x]])) {
+        sys->progCounter += 2;
+    }
+}
+
+void skipIfNotPressed_exa1(Chip8* sys, const uint8_t x)
+{
+    if (!IsKeyPressed(sys->keys[sys->vReg[x]])) {
+        sys->progCounter += 2;
+    }
 }
