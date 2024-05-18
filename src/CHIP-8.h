@@ -13,4 +13,6 @@
 
 Chip8* sysInit(const char *rom);
 
+void cycle(Chip8* sys);
+
 #endif

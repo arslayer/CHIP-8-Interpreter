@@ -103,7 +103,7 @@ static void DecodeAndExecute(Chip8* sys)
     uint8_t regY = (opcode & NIBBLE3) >> 4U;
     uint8_t n = (opcode & NIBBLE4);
     uint8_t doubleN = (opcode & LAST_BYTE);
-    uint8_t firstByte = (opcode & FIRST_BYTE) >> 8U;
+    /*uint8_t firstByte = (opcode & FIRST_BYTE) >> 8U;*/
     uint16_t tripleN = (opcode & NNN);
 
     switch (instruction)
@@ -136,7 +136,6 @@ static void DecodeAndExecute(Chip8* sys)
     default:
         break;
     }
-    printf("%x\n%x\n%x\n%x\n%x\n%x\n%x\n\n", instruction, regX, regY, n, doubleN, firstByte, tripleN);
 }
 
 // Initialize the Chip8 system
@@ -164,4 +163,10 @@ Chip8* sysInit(const char *rom)
 
     return temp;
     
+}
+
+void cycle(Chip8* sys)
+{
+    Fetch(sys);
+    DecodeAndExecute(sys);
 }

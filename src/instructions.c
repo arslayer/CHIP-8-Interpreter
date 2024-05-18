@@ -36,8 +36,8 @@ uint16_t setIndexReg_annn(const uint16_t index)
 void display_dxyn(Chip8* sys, uint8_t x, uint8_t y, uint8_t n)
 {
     // Local variables
-    int xPos = sys->vReg[x] & 64;
-    int yPos = sys->vReg[y] & 32;
+    int xPos = sys->vReg[x] % 64;
+    int yPos = sys->vReg[y] % 32;
     sys->vReg[0xF] = 0;
     int spriteHeight = n;
     int pixel;

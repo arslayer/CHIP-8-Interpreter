@@ -10,22 +10,38 @@ int main(void)
       
         return 1;
     }*/
+    InitWindow(SCREEN_WIDTH * 10, SCREEN_HEIGHT * 10, "CHIPX");
 
+    SetTargetFPS(60);
     //Get rom file from cmd line argument
-    char* romName = "C:/Users/_ars_/source/repos/CHIP-8-Interpreter/1-chip8-logo.ch8";
+    char* romName = "C:/Users/_ars_/source/repos/CHIP-8-Interpreter/2-ibm-logo.ch8";
 
 
     // CHIP-8 system declaration
     Chip8 system = *sysInit(romName);
 
     printf("Hi %x\n", system.ram[516]);
-    while (true)
+    while (!WindowShouldClose())
     {
+        for (int i = 0; i < 11; i++) {
+            cycle(&system);
+        }
+        
+        BeginDrawing();
 
-        /*Fetch(&system);
+        ClearBackground(BLACK);
 
-        DecodeAndExecute(&system);*/
+        if (system.drawScreen) {
+            for (int i = 0; i < SCREEN_HEIGHT; i++) {
+                for (int j = 0; j < SCREEN_WIDTH ; j++) {
+                    if (system.screen[i][j]) {
+                        DrawRectangle(j * 10, i * 10, 10, 10, RAYWHITE);
+                    }
+                }
+            }
+        }
+        EndDrawing();
     }
-
+    CloseWindow();
     return 0;
 }
