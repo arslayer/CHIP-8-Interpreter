@@ -166,13 +166,13 @@ static void DecodeAndExecute(Chip8* sys)
             sub_8xy5(sys, regX, regY);
             break;
         case 0x6:
-            shiftRight_8xy6(sys, regX, regY);
+            shiftRight_8xy6(sys, regX);
             break;
         case 0x7:
             sub_8xy7(sys, regX, regY);
             break;
         case 0xE:
-            shiftLeft_8xye(sys, regX, regY);
+            shiftLeft_8xye(sys, regX);
             break;
         default:
             break;
@@ -250,7 +250,6 @@ Chip8* sysInit(const char *rom)
         // Initialize struct members
         temp->isRunning = true;
         temp->progCounter = PC_START;
-        temp->drawScreen = false;
 
         // Load font
         FontInit(temp);

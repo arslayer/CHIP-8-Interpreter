@@ -9,9 +9,6 @@ void clearScreen_00e0(Chip8* sys)
             sys->screen[i][j] = false;
         }
     }
-
-    // Set drawScreen flag to false
-    sys->drawScreen = true;
 }
 
 void return_00ee(Chip8* sys)
@@ -69,16 +66,19 @@ void set_8xy0(Chip8* sys, const uint8_t x, const uint8_t y)
 void binaryOR_8xy1(Chip8* sys, const uint8_t x, const uint8_t y)
 {
     sys->vReg[x] |= sys->vReg[y];
+    /*sys->vReg[0xF] = 0;*/
 }
 
 void binaryAND_8xy2(Chip8* sys, const uint8_t x, const uint8_t y)
 {
     sys->vReg[x] &= sys->vReg[y];
+    /*sys->vReg[0xF] = 0;*/
 }
 
 void logicalXOR_8xy3(Chip8* sys, const uint8_t x, const uint8_t y)
 {
     sys->vReg[x] ^= sys->vReg[y];
+    /*sys->vReg[0xF] = 0;*/
 }
 
 void add_8xy4(Chip8* sys, const uint8_t x, const uint8_t y)
@@ -116,10 +116,10 @@ void sub_8xy5(Chip8* sys, const uint8_t x, const uint8_t y)
     }
 }
 
-void shiftRight_8xy6(Chip8* sys, const uint8_t x, const uint8_t y)
+void shiftRight_8xy6(Chip8* sys, const uint8_t x)
 {
     // Set VX to value of VY
-    sys->vReg[x] = sys->vReg[y];
+    /*sys->vReg[x] = sys->vReg[y];*/
 
     // Get bit that will be shifted out
     bool bit = sys->vReg[x] & 0x01;
@@ -154,10 +154,10 @@ void sub_8xy7(Chip8* sys, const uint8_t x, const uint8_t y)
     }
 }
 
-void shiftLeft_8xye(Chip8* sys, const uint8_t x, const uint8_t y)
+void shiftLeft_8xye(Chip8* sys, const uint8_t x)
 {
     // Set VX to value of VY
-    sys->vReg[x] = sys->vReg[y];
+    /*sys->vReg[x] = sys->vReg[y];*/
 
     // Get bit that will be shifted out
     bool bit = (sys->vReg[x] & 0x80);
@@ -188,7 +188,9 @@ uint16_t setIndexReg_annn(const uint16_t index)
 
 void jumpOffset_bnnn(Chip8* sys, const uint16_t nnn)
 {
-    sys->progCounter = nnn + sys->vReg[0];
+    uint8_t x = (nnn & 0x0F00u) >> 8u;
+
+    sys->progCounter = nnn + sys->vReg[x];
 }
 
 void random_cxnn(Chip8* sys, const uint8_t x, const uint8_t nn)
@@ -199,8 +201,8 @@ void random_cxnn(Chip8* sys, const uint8_t x, const uint8_t nn)
 void display_dxyn(Chip8* sys, uint8_t x, uint8_t y, uint8_t n)
 {
     // Local variables
-    int xPos = sys->vReg[x] % 64;
-    int yPos = sys->vReg[y] % 32;
+    int xPos = sys->vReg[x] % SCREEN_WIDTH;
+    int yPos = sys->vReg[y] % SCREEN_HEIGHT;
     sys->vReg[0xF] = 0;
     int spriteHeight = n;
     int pixel;
@@ -209,7 +211,7 @@ void display_dxyn(Chip8* sys, uint8_t x, uint8_t y, uint8_t n)
     for (int i = 0; i < spriteHeight; i++) {
 
         // Get pixel in memory if not at edge of screen
-        if ((yPos + i) < 32) {
+        if ((yPos + i) < SCREEN_HEIGHT) {
             pixel = sys->ram[sys->index + i];
         }
         else {
@@ -220,7 +222,7 @@ void display_dxyn(Chip8* sys, uint8_t x, uint8_t y, uint8_t n)
         for (int j = 0; j < 8; j++) {
 
             // Check if within screen bounds
-            if ((xPos + j) < 64) {
+            if ((xPos + j) < SCREEN_WIDTH) {
 
                 if (!(pixel >> (7 - j) & 0x1)) {
                     continue;
@@ -239,8 +241,6 @@ void display_dxyn(Chip8* sys, uint8_t x, uint8_t y, uint8_t n)
             }
         }
     }
-    // Set drawScreen flag to true
-    sys->drawScreen = true;
 }
 
 void skipIfPressed_ex9e(Chip8* sys, const uint8_t x)
@@ -339,12 +339,14 @@ void storeMem_fx55(Chip8* sys, const uint8_t x)
     if (x == 0) {
         // Store V0 into memory at index
         sys->ram[sys->index] = sys->vReg[0];
+        /*sys->index = x + 1;*/
     }
     // Loop and store if greater than 0
     else {
         for (int i = 0; i <= x; i++) {
             sys->ram[sys->index + i] = sys->vReg[i];
         }
+        /*sys->index = x + 1;*/
     }
 }
 

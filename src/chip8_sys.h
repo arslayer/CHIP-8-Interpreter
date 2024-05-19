@@ -44,7 +44,6 @@ typedef struct Chip8_t
     bool screen[SCREEN_HEIGHT][SCREEN_WIDTH];
 
     bool isRunning;
-    bool drawScreen;
 
 
 } Chip8;

@@ -52,13 +52,13 @@ void add_8xy4(Chip8* sys, const uint8_t x, const uint8_t y);
 void sub_8xy5(Chip8* sys, const uint8_t x, const uint8_t y);
 
 // Shift right
-void shiftRight_8xy6(Chip8* sys, const uint8_t x, const uint8_t y);
+void shiftRight_8xy6(Chip8* sys, const uint8_t x);
 
 // Set VX to VY - VX and set carry flag
 void sub_8xy7(Chip8* sys, const uint8_t x, const uint8_t y);
 
 // Shift left
-void shiftLeft_8xye(Chip8* sys, const uint8_t x, const uint8_t y);
+void shiftLeft_8xye(Chip8* sys, const uint8_t x);
 
 /* LOGIC AND ARITHMETIC END */
 
