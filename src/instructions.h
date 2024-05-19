@@ -89,4 +89,37 @@ void skipIfNotPressed_exa1(Chip8* sys, const uint8_t x);
 
 /* END SKIP IF KEY */
 
+
+/* TIMERS */
+
+// Set VX to delay timer value
+void setVXDelay_fx07(Chip8* sys, const uint8_t x);
+
+// Set delay timer to value in VX
+void setDelay_fx15(Chip8* sys, const uint8_t x);
+
+// Set sound timer to value in VX
+void setSound_fx18(Chip8* sys, const uint8_t x);
+
+/* END TIMERS */
+
+
+// Add VX value to index
+void addToIndex_fx1e(Chip8* sys, const uint8_t x);
+
+// Get key that is pressed
+void getKey_fx0a(Chip8* sys, const uint8_t x);
+
+// Set index at address of font character
+void font_fx29(Chip8* sys, const uint8_t x);
+
+// Binary-coded decimal conversion
+void bcd_fx33(Chip8* sys, const uint8_t x);
+
+// Store memory from registers
+void storeMem_fx55(Chip8* sys, const uint8_t x);
+
+// Load memory to registers
+void loadMem_fx65(Chip8* sys, const uint8_t x);
+
 #endif // !INSTRUCTIONS_H

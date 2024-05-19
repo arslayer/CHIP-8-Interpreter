@@ -11,14 +11,14 @@ int main(void)
       
         return 1;
     }*/
-    SetRandomSeed(time(0));
+    SetRandomSeed((unsigned int)time(0));
 
     InitWindow(SCREEN_WIDTH * 10, SCREEN_HEIGHT * 10, "CHIPX");
 
     SetTargetFPS(60);
 
     //Get rom file from cmd line argument
-    char* romName = "C:/Users/_ars_/source/repos/CHIP-8-Interpreter/2-ibm-logo.ch8";
+    char* romName = "C:/Users/_ars_/source/repos/CHIP-8-Interpreter/4-flags.ch8";
 
 
     // CHIP-8 system declaration
@@ -29,7 +29,7 @@ int main(void)
         for (int i = 0; i < 11; i++) {
             cycle(&system);
         }
-        
+        /*cycle(&system);*/
         BeginDrawing();
 
         ClearBackground(BLACK);
@@ -45,7 +45,7 @@ int main(void)
         }
         EndDrawing();
 
-        system.drawScreen = false;
+        /*system.drawScreen = false;*/
 
         if (system.delayTimer > 0) {
             system.delayTimer -= 1;

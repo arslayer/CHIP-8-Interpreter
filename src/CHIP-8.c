@@ -192,6 +192,49 @@ static void DecodeAndExecute(Chip8* sys)
     case 0xD:
         display_dxyn(sys, regX, regY, n);
         break;
+    case 0xE:
+        switch (doubleN)
+        {
+        case 0x9E:
+            skipIfPressed_ex9e(sys, regX);
+            break;
+        case 0xA1:
+            skipIfNotPressed_exa1(sys, regX);
+            break;
+        }
+        break;
+    case 0xF:
+        switch (doubleN)
+        {
+        case 0x07:
+            setVXDelay_fx07(sys, regX);
+            break;
+        case 0x15:
+            setDelay_fx15(sys, regX);
+            break;
+        case 0x18:
+            setSound_fx18(sys, regX);
+            break;
+        case 0x1E:
+            addToIndex_fx1e(sys, regX);
+            break;
+        case 0x0A:
+            getKey_fx0a(sys, regX);
+            break;
+        case 0x29:
+            font_fx29(sys, regX);
+            break;
+        case 0x33:
+            bcd_fx33(sys, regX);
+            break;
+        case 0x55:
+            storeMem_fx55(sys, regX);
+            break;
+        case 0x65:
+            loadMem_fx65(sys, regX);
+            break;
+        }
+        break;
     default:
         break;
     }
