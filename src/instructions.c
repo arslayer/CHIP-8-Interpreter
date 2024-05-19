@@ -107,7 +107,7 @@ void sub_8xy5(Chip8* sys, const uint8_t x, const uint8_t y)
     sys->vReg[x] = sys->vReg[x] - sys->vReg[y];
 
     // Check if VX is greater than VY and set carry flag to 1 if true
-    if (minuend > subtrahend) {
+    if (minuend >= subtrahend) {
         sys->vReg[0xF] = 1;
     }
     // Set to zero if not true
@@ -145,7 +145,7 @@ void sub_8xy7(Chip8* sys, const uint8_t x, const uint8_t y)
     sys->vReg[x] = sys->vReg[y] - sys->vReg[x];
     
     // Check if VY is greater than VX and set carry flag to 1 if true
-    if (minuend > subtrahend) {
+    if (minuend >= subtrahend) {
         sys->vReg[0xF] = 1;
     }
     // Set to zero if not true
