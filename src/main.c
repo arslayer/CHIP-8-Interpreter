@@ -1,6 +1,7 @@
 #include "CHIP-8.h"
 #include "raylib.h"
 #include <stdio.h>
+#include <time.h>
 
 int main(void)
 {
@@ -10,28 +11,37 @@ int main(void)
       
         return 1;
     }*/
+    SetRandomSeed((unsigned int)time(0));
+
     InitWindow(SCREEN_WIDTH * 10, SCREEN_HEIGHT * 10, "CHIPX");
 
     SetTargetFPS(60);
+
     //Get rom file from cmd line argument
-    char* romName = "C:/Users/_ars_/source/repos/CHIP-8-Interpreter/2-ibm-logo.ch8";
+    char* romName = "C:/Users/_ars_/source/repos/CHIP-8-Interpreter/5-quirks.ch8";
 
 
     // CHIP-8 system declaration
     Chip8 system = *sysInit(romName);
 
-    printf("Hi %x\n", system.ram[516]);
     while (!WindowShouldClose())
     {
         for (int i = 0; i < 11; i++) {
             cycle(&system);
         }
-        
+
+        if (system.delayTimer > 0) {
+            system.delayTimer -= 1;
+        }
+        if (system.soundTimer > 0) {
+            system.soundTimer -= 1;
+        }
+
         BeginDrawing();
 
-        ClearBackground(BLACK);
+            ClearBackground(BLACK);
 
-        if (system.drawScreen) {
+        
             for (int i = 0; i < SCREEN_HEIGHT; i++) {
                 for (int j = 0; j < SCREEN_WIDTH ; j++) {
                     if (system.screen[i][j]) {
@@ -39,8 +49,10 @@ int main(void)
                     }
                 }
             }
-        }
+                
         EndDrawing();
+        
+        
     }
     CloseWindow();
     return 0;

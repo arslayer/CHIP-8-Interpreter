@@ -1,8 +1,10 @@
 #include "CHIP-8.h"
 #include "instructions.h"
+#include "raylib.h"
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // Function definitions
 
@@ -114,12 +116,27 @@ static void DecodeAndExecute(Chip8* sys)
         case 0xE0:
             clearScreen_00e0(sys);
             break;
+        case 0xEE:
+            return_00ee(sys);
+            break;
         default:
             break;
         }
-        break;
+    break;
     case 0x1:
         sys->progCounter = jump_1nnn(tripleN);
+        break;
+    case 0x2:
+        call_2nnn(sys, tripleN);
+        break;
+    case 0x3:
+        skip_3xnn(sys, regX, doubleN);
+        break;
+    case 0x4:
+        skip_4xnn(sys, regX, doubleN);
+        break;
+    case 0x5:
+        skip_5xy0(sys, regX, regY);
         break;
     case 0x6:
         sys->vReg[regX] = setRegVX_6xnn(doubleN);
@@ -127,11 +144,96 @@ static void DecodeAndExecute(Chip8* sys)
     case 0x7:
         addVX_7xnn(sys, regX, doubleN);
         break;
+    case 0x8:
+        switch (n)
+        {
+        case 0x0:
+            set_8xy0(sys, regX, regY);
+            break;
+        case 0x1:
+            binaryOR_8xy1(sys, regX, regY);
+            break;
+        case 0x2:
+            binaryAND_8xy2(sys, regX, regY);
+            break;
+        case 0x3:
+            logicalXOR_8xy3(sys, regX, regY);
+            break;
+        case 0x4:
+            add_8xy4(sys, regX, regY);
+            break;
+        case 0x5:
+            sub_8xy5(sys, regX, regY);
+            break;
+        case 0x6:
+            shiftRight_8xy6(sys, regX);
+            break;
+        case 0x7:
+            sub_8xy7(sys, regX, regY);
+            break;
+        case 0xE:
+            shiftLeft_8xye(sys, regX);
+            break;
+        default:
+            break;
+        }
+    break;
+    case 0x9:
+        skip_9xy0(sys, regX, regY);
     case 0xA:
         sys->index = setIndexReg_annn(tripleN);
         break;
+    case 0xB:
+        jumpOffset_bnnn(sys, tripleN);
+        break;
+    case 0xC:
+        random_cxnn(sys, regX, doubleN);
+        break;
     case 0xD:
         display_dxyn(sys, regX, regY, n);
+        break;
+    case 0xE:
+        switch (doubleN)
+        {
+        case 0x9E:
+            skipIfPressed_ex9e(sys, regX);
+            break;
+        case 0xA1:
+            skipIfNotPressed_exa1(sys, regX);
+            break;
+        }
+        break;
+    case 0xF:
+        switch (doubleN)
+        {
+        case 0x07:
+            setVXDelay_fx07(sys, regX);
+            break;
+        case 0x15:
+            setDelay_fx15(sys, regX);
+            break;
+        case 0x18:
+            setSound_fx18(sys, regX);
+            break;
+        case 0x1E:
+            addToIndex_fx1e(sys, regX);
+            break;
+        case 0x0A:
+            getKey_fx0a(sys, regX);
+            break;
+        case 0x29:
+            font_fx29(sys, regX);
+            break;
+        case 0x33:
+            bcd_fx33(sys, regX);
+            break;
+        case 0x55:
+            storeMem_fx55(sys, regX);
+            break;
+        case 0x65:
+            loadMem_fx65(sys, regX);
+            break;
+        }
         break;
     default:
         break;
@@ -148,22 +250,46 @@ Chip8* sysInit(const char *rom)
         // Initialize struct members
         temp->isRunning = true;
         temp->progCounter = PC_START;
-        temp->drawScreen = false;
 
         // Load font
         FontInit(temp);
 
         // Load rom
         LoadRom(temp, rom);
+
+        // Keys for Chip8 keypad
+        static const uint8_t keys[] = {
+            KEY_X,      // 0
+            KEY_ONE,    // 1
+            KEY_TWO,    // 2
+            KEY_THREE,  // 3
+            KEY_Q,      // 4
+            KEY_W,      // 5
+            KEY_E,      // 6
+            KEY_A,      // 7
+            KEY_S,      // 8
+            KEY_D,      // 9
+            KEY_Z,      // A
+            KEY_C,      // B
+            KEY_FOUR,   // C
+            KEY_R,      // D
+            KEY_F,      // E
+            KEY_V       // F
+        };
+
+        // Initialize keys
+        memcpy(temp->keys, keys, sizeof(temp->keys));
         
     }
     else {
         printf("Memory not allocated");
+        exit(EXIT_FAILURE);
     }
 
     return temp;
     
 }
+
 
 void cycle(Chip8* sys)
 {
